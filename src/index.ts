@@ -50,10 +50,13 @@ cli.command('[pkgName]', 'package name')
                 initialValue: true,
             })
             isCancelProcess(coverage, CANCEL_PROCESS)
-            if (coverage) {
-                fs.rmdirSync(packageFolder)
-                fs.mkdirSync(packageFolder)
+            if (!coverage) {
+                log.error('Aborted. No package was created.')
+                process.exit(0)
             }
+
+            fs.rmdirSync(packageFolder)
+            fs.mkdirSync(packageFolder)
         }
     })
 
