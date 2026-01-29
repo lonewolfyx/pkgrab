@@ -1,4 +1,6 @@
 import type { ICommandOptions } from '@/shared/types'
+import fs from 'node:fs'
+import { resolve } from 'node:path'
 import * as process from 'node:process'
 import { confirm, intro, log, spinner } from '@clack/prompts'
 import cac from 'cac'
@@ -36,6 +38,22 @@ cli.command('[pkgName]', 'package name')
         if (!registry) {
             log.error('Aborted. No package was created.')
             process.exit(0)
+        }
+
+        const packageFolder = resolve(options.cwd, pkgName)
+        if (!fs.existsSync(packageFolder)) {
+            fs.mkdirSync(packageFolder)
+        }
+        else {
+            const coverage = await confirm({
+                message: `Directory "${pc.green(pkgName)}" exists. Overwrite?`,
+                initialValue: true,
+            })
+            isCancelProcess(coverage, CANCEL_PROCESS)
+            if (coverage) {
+                fs.rmdirSync(packageFolder)
+                fs.mkdirSync(packageFolder)
+            }
         }
     })
 
