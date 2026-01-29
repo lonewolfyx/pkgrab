@@ -6,6 +6,7 @@ export interface ICommandOptions {
 
 export interface IConfig {
     cwd: string
+    projectPath: string
 }
 
 export interface INpmRegistryResult {
