@@ -3,7 +3,10 @@ import fs from 'node:fs'
 import * as process from 'node:process'
 import { confirm, intro, log, spinner } from '@clack/prompts'
 import cac from 'cac'
+import { downloadTemplate } from 'giget'
 import pc from 'picocolors'
+import { rimraf } from 'rimraf'
+import { x } from 'tinyexec'
 import { resolveConfig } from '@/config.ts'
 import { CANCEL_PROCESS } from '@/constant.ts'
 import { isCancelProcess, isRegistryNpmPackage } from '@/utils'
@@ -57,9 +60,25 @@ cli.command('[pkgName]', 'package name')
                 process.exit(0)
             }
 
-            fs.rmdirSync(packageFolder)
+            await rimraf(packageFolder)
             fs.mkdirSync(packageFolder)
         }
+
+        log.step('Package initialize... ☕')
+        await downloadTemplate('https://codeload.github.com/lonewolfyx-template/npm-base/tar.gz/refs/heads/master', {
+            dir: config.projectPath,
+            force: true,
+        })
+
+        log.step('Installation in progress... ☕')
+        await x('npx', ['-y', '@antfu/ni'], {
+            nodeOptions: {
+                cwd: config.projectPath,
+                stdio: 'inherit',
+                shell: true,
+            },
+        })
+        log.success(`${pc.green(config.pkg)} package created successfully.`)
     })
 
 cli.help()

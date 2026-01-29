@@ -46,8 +46,11 @@
         "cac": "^6.7.14",
         "defu": "^6.1.4",
         "find-up": "^8.0.0",
+        "giget": "^3.1.1",
         "glob": "^13.0.0",
-        "ofetch": "^1.5.1"
+        "ofetch": "^1.5.1",
+        "rimraf": "^6.1.2",
+        "tinyexec": "^1.0.2"
     },
     "devDependencies": {
         "@antfu/eslint-config": "^6.7.3",
