@@ -2,7 +2,7 @@ import type { ICommandOptions } from '@/shared/types'
 import * as process from 'node:process'
 import cac from 'cac'
 import { resolveConfig } from '@/config.ts'
-import { inspectPackage } from '@/utils.ts'
+import { inspectPackage } from '@/utils'
 import { name, version } from '../package.json'
 
 const cli = cac(name)
