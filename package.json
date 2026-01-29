@@ -1,7 +1,7 @@
 {
     "name": "pkgrab",
     "type": "module",
-    "version": "0.0.0-alpha.1",
+    "version": "0.0.1",
     "packageManager": "pnpm@10.15.1",
     "description": "📦grab unused npm package names instantly.",
     "author": "lonewolfyx <olddrivero.king@qq.com>",
