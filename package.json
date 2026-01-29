@@ -46,7 +46,8 @@
         "cac": "^6.7.14",
         "defu": "^6.1.4",
         "find-up": "^8.0.0",
-        "glob": "^13.0.0"
+        "glob": "^13.0.0",
+        "ofetch": "^1.5.1"
     },
     "devDependencies": {
         "@antfu/eslint-config": "^6.7.3",

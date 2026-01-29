@@ -7,3 +7,17 @@ export interface ICommandOptions {
 export interface IConfig {
     cwd: string
 }
+
+export interface INpmRegistryResult {
+    'name'?: string
+    'dist-tags'?: {
+        latest: string
+    }
+    'error'?: string
+}
+
+export interface IRegistryInfo {
+    isRegistry: boolean
+    name: string
+    version: string
+}
