@@ -8,10 +8,14 @@ import { name, version } from '../package.json'
 
 const cli = cac(name)
 
-cli.command('[pkgName]')
+cli.command('[pkgName]', 'package name')
     .option('--cwd,-c', 'project cwd', { default: process.cwd() })
     .action(async (pkgName: string = '', options: ICommandOptions) => {
         intro(pc.bgCyan(` ${name} [v${version}]`))
+
+        if (!pkgName) {
+            return cli.outputHelp()
+        }
 
         const loading = spinner()
         loading.start('Checking npm package registration')
