@@ -5,6 +5,7 @@ export interface ICommandOptions {
 }
 
 export interface IConfig {
+    pkg: string
     cwd: string
     projectPath: string
 }

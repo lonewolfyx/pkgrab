@@ -4,6 +4,7 @@ import { resolve } from 'node:path'
 export const resolveConfig = (pkgName: string, options: ICommandOptions): IConfig => {
     const { cwd } = options
     return {
+        pkg: pkgName,
         cwd,
         projectPath: resolve(cwd, pkgName),
     }
