@@ -1,10 +1,13 @@
 import type { ICommandOptions } from '@/shared/types'
 import fs from 'node:fs'
+import { relative } from 'node:path'
 import * as process from 'node:process'
 import { confirm, intro, log, spinner } from '@clack/prompts'
 import cac from 'cac'
 import { downloadTemplate } from 'giget'
+import { glob } from 'glob'
 import pc from 'picocolors'
+import { replaceInFile } from 'replace-in-file'
 import { rimraf } from 'rimraf'
 import { x } from 'tinyexec'
 import { resolveConfig } from '@/config.ts'
@@ -79,6 +82,49 @@ cli.command('[pkgName]', 'package name')
             },
         })
         log.success(`${pc.green(config.pkg)} package created successfully.`)
+
+        const resolveConfigPath = await glob(`**/{package.json,README.md}`, {
+            cwd: config.projectPath,
+            ignore: 'node_modules/**',
+        })
+
+        const results = await replaceInFile({
+            files: resolveConfigPath,
+            from: [
+                /pkg-placeholder/g,
+                /_description_/g,
+            ],
+            to: [config.pkg, ''],
+            countMatches: true,
+            glob: {
+                cwd: config.projectPath,
+                absolute: true,
+            },
+        })
+
+        for (const result of results) {
+            if (!result.hasChanged)
+                continue
+            log.success(`${pc.green(relative(config.projectPath, result.file))} was replaced in ${pc.green(result.numReplacements)} place(s)`)
+        }
+
+        const publishing = spinner()
+        publishing.start('package publishing')
+        await x('npm', ['login'], {
+            nodeOptions: {
+                cwd: config.projectPath,
+                stdio: 'inherit',
+                shell: true,
+            },
+        })
+        await x('npm', ['publish'], {
+            nodeOptions: {
+                cwd: config.projectPath,
+                stdio: 'inherit',
+                shell: true,
+            },
+        })
+        publishing.stop('package publishing done.')
     })
 
 cli.help()
