@@ -1,10 +1,10 @@
 import type { ICommandOptions } from '@/shared/types'
 import fs from 'node:fs'
-import { resolve } from 'node:path'
 import * as process from 'node:process'
 import { confirm, intro, log, spinner } from '@clack/prompts'
 import cac from 'cac'
 import pc from 'picocolors'
+import { resolveConfig } from '@/config.ts'
 import { CANCEL_PROCESS } from '@/constant.ts'
 import { isCancelProcess, isRegistryNpmPackage } from '@/utils'
 import { name, version } from '../package.json'
@@ -19,6 +19,8 @@ cli.command('[pkgName]', 'package name')
         if (!pkgName) {
             return cli.outputHelp()
         }
+
+        const config = resolveConfig(pkgName, options)
 
         const loading = spinner()
         loading.start('Checking npm package registration')
@@ -40,7 +42,7 @@ cli.command('[pkgName]', 'package name')
             process.exit(0)
         }
 
-        const packageFolder = resolve(options.cwd, pkgName)
+        const packageFolder = config.projectPath
         if (!fs.existsSync(packageFolder)) {
             fs.mkdirSync(packageFolder)
         }
