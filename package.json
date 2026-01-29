@@ -3,7 +3,7 @@
     "type": "module",
     "version": "0.0.1",
     "packageManager": "pnpm@10.15.1",
-    "description": "📦grab unused npm package names instantly.",
+    "description": "📦 grab unused npm package names instantly.",
     "author": "lonewolfyx <olddrivero.king@qq.com>",
     "license": "MIT",
     "homepage": "https://github.com/lonewolfyx/pkgrab",
