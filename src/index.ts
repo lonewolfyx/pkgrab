@@ -25,14 +25,14 @@ cli.command('[pkgName]', 'package name')
         const loading = spinner()
         loading.start('Checking npm package registration')
 
-        const pkg = await isRegistryNpmPackage(pkgName)
+        const pkg = await isRegistryNpmPackage(config.pkg)
         if (pkg.isRegistry) {
-            return loading.error(`${pc.green(pkgName)} is registered 📦 ${pc.red(pkg.version)}`)
+            return loading.error(`${pc.green(config.pkg)} is registered 📦 ${pc.red(pkg.version)}`)
         }
-        loading.stop(`${pc.green(pkgName)} is not published on npm`)
+        loading.stop(`${pc.green(config.pkg)} is not published on npm`)
 
         const registry = await confirm({
-            message: `You can initialize a new package with ${pc.green(pkgName)}?`,
+            message: `You can initialize a new package with ${pc.green(config.pkg)}?`,
             initialValue: true,
         })
 
@@ -48,7 +48,7 @@ cli.command('[pkgName]', 'package name')
         }
         else {
             const coverage = await confirm({
-                message: `Directory "${pc.green(pkgName)}" exists. Overwrite?`,
+                message: `Directory "${pc.green(config.pkg)}" exists. Overwrite?`,
                 initialValue: true,
             })
             isCancelProcess(coverage, CANCEL_PROCESS)
