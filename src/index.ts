@@ -5,6 +5,7 @@ import { confirm, intro, log, spinner } from '@clack/prompts'
 import cac from 'cac'
 import pc from 'picocolors'
 import { rimraf } from 'rimraf'
+import { x } from 'tinyexec'
 import { resolveConfig } from '@/config.ts'
 import { CANCEL_PROCESS } from '@/constant.ts'
 import { isCancelProcess, isRegistryNpmPackage } from '@/utils'
@@ -62,64 +63,24 @@ cli.command('[pkgName]', 'package name')
             fs.mkdirSync(packageFolder)
         }
 
-        // log.step('Package initialize... ☕')
-        // await downloadTemplate('https://codeload.github.com/lonewolfyx-template/npm-base/tar.gz/refs/heads/master', {
-        //     dir: config.projectPath,
-        //     force: true,
-        // })
-        //
-        // log.step('Installation in progress... ☕')
-        // await x('npx', ['-y', '@antfu/ni'], {
-        //     nodeOptions: {
-        //         cwd: config.projectPath,
-        //         stdio: 'inherit',
-        //         shell: true,
-        //     },
-        // })
-        // log.success(`${pc.green(config.pkg)} package created successfully.`)
-        //
-        // const resolveConfigPath = await glob(`**/{package.json,README.md}`, {
-        //     cwd: config.projectPath,
-        //     ignore: 'node_modules/**',
-        // })
-        //
-        // const results = await replaceInFile({
-        //     files: resolveConfigPath,
-        //     from: [
-        //         /pkg-placeholder/g,
-        //         /_description_/g,
-        //     ],
-        //     to: [config.pkg, ''],
-        //     countMatches: true,
-        //     glob: {
-        //         cwd: config.projectPath,
-        //         absolute: true,
-        //     },
-        // })
-        //
-        // for (const result of results) {
-        //     if (!result.hasChanged)
-        //         continue
-        //     log.success(`${pc.green(relative(config.projectPath, result.file))} was replaced in ${pc.green(result.numReplacements)} place(s)`)
-        // }
-        //
-        // const publishing = spinner()
-        // publishing.start('package publishing')
-        // await x('npm', ['login'], {
-        //     nodeOptions: {
-        //         cwd: config.projectPath,
-        //         stdio: 'inherit',
-        //         shell: true,
-        //     },
-        // })
-        // await x('npm', ['publish'], {
-        //     nodeOptions: {
-        //         cwd: config.projectPath,
-        //         stdio: 'inherit',
-        //         shell: true,
-        //     },
-        // })
-        // publishing.stop('package publishing done.')
+        await x('npm', ['init', '-y'], {
+            nodeOptions: {
+                cwd: config.projectPath,
+                stdio: 'inherit',
+                shell: true,
+            },
+        })
+
+        const publishing = spinner()
+        publishing.start('package publishing')
+        await x('npm', ['publish'], {
+            nodeOptions: {
+                cwd: config.projectPath,
+                stdio: 'inherit',
+                shell: true,
+            },
+        })
+        publishing.stop('package publishing done.')
     })
 
 cli.help()
