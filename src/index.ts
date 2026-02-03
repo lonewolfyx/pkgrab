@@ -63,6 +63,14 @@ cli.command('[pkgName]', 'package name')
             fs.mkdirSync(packageFolder)
         }
 
+        await x('npm', ['config', 'set', 'init-version', '0.0.0'], {
+            nodeOptions: {
+                cwd: config.projectPath,
+                stdio: 'inherit',
+                shell: true,
+            },
+        })
+
         await x('npm', ['init', '-y'], {
             nodeOptions: {
                 cwd: config.projectPath,
