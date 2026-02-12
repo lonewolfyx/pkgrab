@@ -22,7 +22,7 @@ cli.command('[pkgName]', 'package name')
             return cli.outputHelp()
         }
 
-        const config = resolveConfig(pkgName, options)
+        const config = await resolveConfig(pkgName, options)
 
         const loading = spinner()
         loading.start('Checking npm package registration')
@@ -81,7 +81,17 @@ cli.command('[pkgName]', 'package name')
 
         const publishing = spinner()
         publishing.start('package publishing')
-        await x('npm', ['publish'], {
+
+        const publishParams = [
+            'publish',
+            '--access',
+            'public',
+        ]
+        if (config.token) {
+            publishParams.push(`--//registry.npmjs.org/:_authToken=${config.token}`)
+        }
+
+        await x('npm', publishParams, {
             nodeOptions: {
                 cwd: config.projectPath,
                 stdio: 'inherit',

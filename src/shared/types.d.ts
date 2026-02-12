@@ -8,6 +8,7 @@ export interface IConfig {
     pkg: string
     cwd: string
     projectPath: string
+    token: string
 }
 
 export interface INpmRegistryResult {
