@@ -1,9 +1,11 @@
 import type { ICommandOptions } from '@/shared/types'
 import fs from 'node:fs'
+import { resolve } from 'node:path'
 import * as process from 'node:process'
 import { confirm, intro, log, spinner } from '@clack/prompts'
 import cac from 'cac'
 import pc from 'picocolors'
+import { readPackageJSON, writePackageJSON } from 'pkg-types'
 import { rimraf } from 'rimraf'
 import { x } from 'tinyexec'
 import { resolveConfig } from '@/config.ts'
@@ -78,6 +80,15 @@ cli.command('[pkgName]', 'package name')
                 shell: true,
             },
         })
+
+        const packageJson = await readPackageJSON(config.projectPath)
+
+        packageJson.publishConfig = {
+            registry: 'https://registry.npmjs.org',
+            access: 'public',
+        }
+
+        await writePackageJSON(resolve(config.projectPath, 'package.json'), packageJson)
 
         const publishing = spinner()
         publishing.start('package publishing')
