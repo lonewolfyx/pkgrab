@@ -59,7 +59,7 @@
         "@lonewolfyx/tsconfig": "^0.0.6",
         "@types/node": "^25.3.3",
         "eslint": "^9.39.3",
-        "lint-staged": "^16.3.1",
+        "nano-staged": "^1.0.2",
         "picocolors": "^1.1.1",
         "simple-git-hooks": "^2.13.1",
         "tsdown": "^0.20.3",
@@ -67,10 +67,10 @@
         "typescript": "^5.9.3"
     },
     "simple-git-hooks": {
-        "pre-commit": "npx lint-staged",
+        "pre-commit": "npx nano-staged",
         "commit-msg": "node scripts/verify-commit.js"
     },
-    "lint-staged": {
+    "nano-staged": {
         "*": "eslint --fix"
     }
 }
